@@ -1,10 +1,9 @@
-package com.ksayker.reddit.ui.base
+package com.ksayker.reddit.ui.core
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer

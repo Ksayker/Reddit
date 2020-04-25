@@ -9,18 +9,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ksayker.reddit.R
 import com.ksayker.reddit.ui.adapter.EmptyItemAdapter
 import com.ksayker.reddit.ui.adapter.PostAdapter
-import com.ksayker.reddit.ui.base.BaseFragment
+import com.ksayker.reddit.ui.core.BaseFragment
+import com.ksayker.reddit.ui.core.MainActivity
+import com.ksayker.reddit.ui.core.NavigationManager
+import com.ksayker.reddit.utils.listener.UrlClickListener
 import kotlinx.android.synthetic.main.fragment_post_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PostListFragment: BaseFragment() {
+class PostListFragment: BaseFragment(), UrlClickListener {
     override val layoutResId: Int
         get() = R.layout.fragment_post_list
 
     private val viewModel: PostListModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val postAdapter = PostAdapter()
+        val postAdapter = PostAdapter(this)
 
         observe(viewModel.ldPostItems) {
             postAdapter.setItems(it)
@@ -43,7 +46,13 @@ class PostListFragment: BaseFragment() {
         viewModel.initList(savedInstanceState == null)
     }
 
+    override fun onUrlClicked(url: String) {
+        (activity as? NavigationManager)?.openImageUrl(url)
+    }
+
     companion object {
+        const val TAG = "PostListFragment"
+
         fun newInstance() = PostListFragment().apply {
             arguments = Bundle()
         }

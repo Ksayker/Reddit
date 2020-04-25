@@ -2,4 +2,8 @@
     <string name="app_name">Reddit</string>
 
     <string name="message_postList_noItems">No items</string>
+
+    <string name="text_postItem_author">Author: %1$s</string>
+    <string name="text_postItem_count">Count: %1$d</string>
+    <string name="text_postItem_hoursAgo">%1$s hours ago</string>
 </resources>
