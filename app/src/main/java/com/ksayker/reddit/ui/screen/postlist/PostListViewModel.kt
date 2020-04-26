@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ksayker.reddit.domain.entity.Post
 
-class PostListModel: ViewModel() {
+class PostListViewModel: ViewModel() {
     private val postItems = ArrayList<Post>()
 
     val ldPostItems = MutableLiveData<MutableList<Post>>()

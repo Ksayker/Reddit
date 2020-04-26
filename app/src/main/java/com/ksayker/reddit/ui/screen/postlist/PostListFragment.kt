@@ -10,17 +10,15 @@ import com.ksayker.reddit.R
 import com.ksayker.reddit.ui.adapter.EmptyItemAdapter
 import com.ksayker.reddit.ui.adapter.PostAdapter
 import com.ksayker.reddit.ui.core.BaseFragment
-import com.ksayker.reddit.ui.core.MainActivity
 import com.ksayker.reddit.ui.core.NavigationManager
 import com.ksayker.reddit.utils.listener.UrlClickListener
 import kotlinx.android.synthetic.main.fragment_post_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PostListFragment: BaseFragment(), UrlClickListener {
-    override val layoutResId: Int
-        get() = R.layout.fragment_post_list
+    private val viewModel: PostListViewModel by viewModel()
 
-    private val viewModel: PostListModel by viewModel()
+    override val layoutResId = R.layout.fragment_post_list
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val postAdapter = PostAdapter(this)

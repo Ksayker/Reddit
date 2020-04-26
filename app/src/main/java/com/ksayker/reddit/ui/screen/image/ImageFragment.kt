@@ -4,17 +4,27 @@ import android.os.Bundle
 import android.view.View
 import com.ksayker.reddit.R
 import com.ksayker.reddit.ui.core.BaseFragment
+import com.ksayker.reddit.utils.addImageToGallery
 import com.ksayker.reddit.utils.loadImage
 import kotlinx.android.synthetic.main.fragment_image.view.*
 
 class ImageFragment: BaseFragment() {
+
     override val layoutResId = R.layout.fragment_image
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val url = arguments?.getString(ARG_IMAGE)
+        val context = context
 
-        url?.let {
-            loadImage(view.ivImage, url)
+        if (url != null && context != null) {
+            loadImage(context, url) {
+                view.ivImage.setImageBitmap(it)
+
+
+                Thread(Runnable {
+                    addImageToGallery(context, it)
+                }).start()
+            }
         }
     }
 
