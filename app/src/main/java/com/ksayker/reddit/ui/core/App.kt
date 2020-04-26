@@ -6,8 +6,16 @@ import com.ksayker.reddit.ui.di.AppModule
 class App: Application() {
 
     override fun onCreate() {
-        super.onCreate()
+        instance = this
 
         AppModule.initAppModule(this)
+
+        super.onCreate()
+    }
+
+    companion object {
+        private lateinit var instance: App
+
+        fun getApp() = instance
     }
 }

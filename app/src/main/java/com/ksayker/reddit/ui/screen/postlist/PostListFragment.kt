@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ksayker.reddit.R
@@ -12,6 +13,7 @@ import com.ksayker.reddit.ui.adapter.LoadingAdapter
 import com.ksayker.reddit.ui.adapter.PostAdapter
 import com.ksayker.reddit.ui.core.BaseFragment
 import com.ksayker.reddit.ui.core.NavigationManager
+import com.ksayker.reddit.utils.isInternetAvailable
 import com.ksayker.reddit.utils.listener.UrlClickListener
 import kotlinx.android.synthetic.main.fragment_post_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -62,11 +64,19 @@ class PostListFragment: BaseFragment(), UrlClickListener, LoadingAdapter.Loading
     }
 
     override fun onUrlClicked(url: String) {
-        (activity as? NavigationManager)?.openImageUrl(url)
+        if (isInternetAvailable()) {
+            (activity as? NavigationManager)?.openImageUrl(url)
+        } else {
+            Toast.makeText(context, R.string.message_checkNetwork, Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onLoadingItemDisplayed() {
-        viewModel.loadNextPage()
+        if (isInternetAvailable()) {
+            viewModel.loadNextPage()
+        } else {
+            Toast.makeText(context, R.string.message_checkNetwork, Toast.LENGTH_SHORT).show()
+        }
     }
 
     companion object {

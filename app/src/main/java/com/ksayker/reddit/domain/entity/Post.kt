@@ -7,7 +7,7 @@ data class Post(
     val commentsCount: Int
 ) {
     companion object {
-        const val NO_IMAGE = "NO_IMAGE"
+        const val NO_IMAGE = "default"
 
         val NONE = Post("", 0L, NO_IMAGE, 0)
     }

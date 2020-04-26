@@ -2,13 +2,13 @@ package com.ksayker.reddit.utils
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.provider.MediaStore
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 
 
 fun loadImage(target: ImageView, url: String) {
@@ -21,30 +21,15 @@ fun loadImage(context: Context, url: String, action: (bitmap: Bitmap) -> Unit) {
     Glide.with(context)
         .asBitmap()
         .load(url)
-        .listener(object : RequestListener<Bitmap> {
-            override fun onLoadFailed(
-                e: GlideException?,
-                model: Any?,
-                target: Target<Bitmap>?,
-                isFirstResource: Boolean
-            ): Boolean {
-                return true
+        .into(object : CustomTarget<Bitmap>() {
+            override fun onLoadCleared(placeholder: Drawable?) {
             }
 
-            override fun onResourceReady(
-                resource: Bitmap?,
-                model: Any?,
-                target: Target<Bitmap>?,
-                dataSource: DataSource?,
-                isFirstResource: Boolean
-            ): Boolean {
-                resource?.let { action.invoke(it) }
-
-                return true
+            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                resource.let { action.invoke(it) }
             }
 
         })
-        .submit()
 }
 
 //todo Yura: fix
