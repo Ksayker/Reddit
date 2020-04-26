@@ -1,3 +1,6 @@
 package com.ksayker.reddit.domain.entity
 
-class PostResponse
+data class PostResponse(
+    val nextPageToken: String,
+    val postList: List<Post>
+)

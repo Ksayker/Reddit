@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ksayker.reddit.R
 import com.ksayker.reddit.ui.adapter.EmptyItemAdapter
+import com.ksayker.reddit.ui.adapter.LoadingAdapter
 import com.ksayker.reddit.ui.adapter.PostAdapter
 import com.ksayker.reddit.ui.core.BaseFragment
 import com.ksayker.reddit.ui.core.NavigationManager
@@ -15,7 +16,7 @@ import com.ksayker.reddit.utils.listener.UrlClickListener
 import kotlinx.android.synthetic.main.fragment_post_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PostListFragment: BaseFragment(), UrlClickListener {
+class PostListFragment: BaseFragment(), UrlClickListener, LoadingAdapter.LoadingItemListener {
     private val viewModel: PostListViewModel by viewModel()
 
     override val layoutResId = R.layout.fragment_post_list
@@ -29,30 +30,51 @@ class PostListFragment: BaseFragment(), UrlClickListener {
 
         rv_postList_list.run {
             layoutManager = LinearLayoutManager(context)
-            adapter = EmptyItemAdapter(
-                    postAdapter as RecyclerView.Adapter<RecyclerView.ViewHolder>,
-                    object : EmptyItemAdapter.EmptyItemCreator {
-                        override fun createEmptyItem(parent: ViewGroup): View {
-                            return LayoutInflater.from(context)
-                                .inflate(R.layout.item_post_empty, rv_postList_list, false)
-                        }
-                    }).apply {
-                    showEmptyItem = true
-                }
-        }
 
-        viewModel.initList(savedInstanceState == null)
+            adapter = EmptyItemAdapter(
+                LoadingAdapter(
+                    postAdapter as RecyclerView.Adapter<RecyclerView.ViewHolder>,
+                    getLoadingItemCreator(),
+                    this@PostListFragment),
+                getEmptyItemCreator()
+            ).apply {
+                showEmptyItem = true
+            }
+        }
+    }
+
+    private fun getEmptyItemCreator(): EmptyItemAdapter.EmptyItemCreator {
+        return object : EmptyItemAdapter.EmptyItemCreator {
+            override fun createEmptyItem(parent: ViewGroup): View {
+                return LayoutInflater.from(context)
+                    .inflate(R.layout.item_post_empty, rv_postList_list, false)
+            }
+        }
+    }
+
+    private fun getLoadingItemCreator(): LoadingAdapter.LoadingItemCreator {
+        return object : LoadingAdapter.LoadingItemCreator {
+            override fun createLoadingItem(parent: ViewGroup): View {
+                return LayoutInflater.from(context)
+                    .inflate(R.layout.item_post_loading, rv_postList_list, false)
+            }
+        }
     }
 
     override fun onUrlClicked(url: String) {
         (activity as? NavigationManager)?.openImageUrl(url)
     }
 
-    companion object {
-        const val TAG = "PostListFragment"
+    override fun onLoadingItemDisplayed() {
+        viewModel.loadNextPage()
+    }
 
+    companion object {
+
+        const val TAG = "PostListFragment"
         fun newInstance() = PostListFragment().apply {
             arguments = Bundle()
         }
+
     }
 }

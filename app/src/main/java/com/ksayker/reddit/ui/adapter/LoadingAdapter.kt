@@ -5,52 +5,59 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
-class EmptyItemAdapter<T : RecyclerView.Adapter<ViewHolder>>(
+class LoadingAdapter<T : RecyclerView.Adapter<ViewHolder>>(
     private val adapter: T,
-    private val emptyItemCreator: EmptyItemCreator
+    private val loadingItemCreator: LoadingItemCreator,
+    private val loadingItemListener: LoadingItemListener? = null
 ) : WrapperAdapter(adapter) {
 
-    var showEmptyItem = false
+    var showLoadingItem = true
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return if (viewType == EMPTY_ITEM) {
-            object : ViewHolder(emptyItemCreator.createEmptyItem(parent)) {}
+        return if (viewType == LOADING_ITEM) {
+            object : ViewHolder(loadingItemCreator.createLoadingItem(parent)) {}
         } else {
             adapter.onCreateViewHolder(parent, viewType)
         }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (getItemViewType(position) != EMPTY_ITEM) {
+        if (getItemViewType(position) == LOADING_ITEM) {
+            loadingItemListener?.onLoadingItemDisplayed()
+        } else {
             adapter.onBindViewHolder(holder, position)
         }
     }
 
     override fun getItemCount(): Int {
         var result = adapter.itemCount
-        if (result == 0 && showEmptyItem) {
-            result = 1
+        if (showLoadingItem) {
+            result++
         }
         return result
     }
 
     override fun getItemViewType(position: Int): Int {
-        var result = EMPTY_ITEM
-        if (adapter.itemCount != 0) {
-            result = adapter.getItemViewType(position)
+        return if (position != adapter.itemCount) {
+            adapter.getItemViewType(position)
+        } else {
+            LOADING_ITEM
         }
-        return result
     }
 
     fun getAdapter(): T {
         return adapter
     }
 
-    interface EmptyItemCreator {
-        fun createEmptyItem(parent: ViewGroup): View
+    interface LoadingItemCreator {
+        fun createLoadingItem(parent: ViewGroup): View
+    }
+
+    interface LoadingItemListener {
+        fun onLoadingItemDisplayed()
     }
 }
