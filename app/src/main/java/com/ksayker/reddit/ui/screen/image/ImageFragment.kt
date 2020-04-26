@@ -1,6 +1,8 @@
 package com.ksayker.reddit.ui.screen.image
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import com.ksayker.reddit.R
 import com.ksayker.reddit.ui.core.BaseFragment
@@ -18,12 +20,11 @@ class ImageFragment: BaseFragment() {
 
         if (url != null && context != null) {
             loadImage(context, url) {
-                view.ivImage.setImageBitmap(it)
+                Handler(Looper.getMainLooper()).post {
+                    view.ivImage.setImageBitmap(it)
 
-
-                Thread(Runnable {
                     addImageToGallery(context, it)
-                }).start()
+                }
             }
         }
     }

@@ -49,10 +49,12 @@ fun loadImage(context: Context, url: String, action: (bitmap: Bitmap) -> Unit) {
 
 //todo Yura: fix
 fun addImageToGallery(context: Context, bitmap: Bitmap) {
-    MediaStore.Images.Media.insertImage(
-        context.contentResolver,
-        bitmap,
-        "Reddit image",
-        "Reddit image"
-    );
+    Thread(Runnable {
+        MediaStore.Images.Media.insertImage(
+            context.contentResolver,
+            bitmap,
+            "Reddit image",
+            "Reddit image"
+        );
+    }).start()
 }

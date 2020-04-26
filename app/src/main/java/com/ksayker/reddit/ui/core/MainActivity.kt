@@ -2,6 +2,7 @@ package com.ksayker.reddit.ui.core
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.ksayker.reddit.R
 import com.ksayker.reddit.ui.screen.image.ImageFragment
 import com.ksayker.reddit.ui.screen.postlist.PostListFragment
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity(), NavigationManager {
     }
 
     override fun openImageUrl(url: String) {
+        Log.d("zxczxc", url)
         val fragment = supportFragmentManager.findFragmentByTag(ImageFragment.TAG)
 
         supportFragmentManager
