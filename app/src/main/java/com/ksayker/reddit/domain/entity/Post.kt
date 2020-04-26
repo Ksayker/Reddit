@@ -8,5 +8,7 @@ data class Post(
 ) {
     companion object {
         const val NO_IMAGE = "NO_IMAGE"
+
+        val NONE = Post("", 0L, NO_IMAGE, 0)
     }
 }
