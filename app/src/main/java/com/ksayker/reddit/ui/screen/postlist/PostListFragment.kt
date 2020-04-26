@@ -1,6 +1,7 @@
 package com.ksayker.reddit.ui.screen.postlist
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import com.ksayker.reddit.ui.core.BaseFragment
 import com.ksayker.reddit.ui.core.NavigationManager
 import com.ksayker.reddit.utils.isInternetAvailable
 import com.ksayker.reddit.utils.listener.UrlClickListener
+import com.ksayker.reddit.utils.requestStoragePermission
 import kotlinx.android.synthetic.main.fragment_post_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -43,6 +45,8 @@ class PostListFragment: BaseFragment(), UrlClickListener, LoadingAdapter.Loading
                 showEmptyItem = true
             }
         }
+
+        requestStoragePermissions()
     }
 
     private fun getEmptyItemCreator(): EmptyItemAdapter.EmptyItemCreator {

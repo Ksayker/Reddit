@@ -23,7 +23,9 @@ class ImageFragment: BaseFragment() {
                 Handler(Looper.getMainLooper()).post {
                     view.ivImage.setImageBitmap(it)
 
-                    addImageToGallery(context, it)
+                    requestStoragePermissions {
+                        addImageToGallery(context, it)
+                    }
                 }
             }
         }
