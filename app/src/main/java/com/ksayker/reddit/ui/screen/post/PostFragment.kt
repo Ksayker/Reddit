@@ -16,7 +16,8 @@ class PostFragment: BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val post = arguments?.getParcelable<Post>(ARG_POST)
         val context = context
-        if (post != null && context != null){
+
+        if (post != null && context != null) {
             view.tv_post_title.text = post.title
             view.tv_post_commentsCount.text =
                 context.getString(R.string.text_postItem_count, post.commentsCount)
@@ -31,6 +32,8 @@ class PostFragment: BaseFragment() {
                 }
             }
         }
+
+        requestStoragePermissions()
     }
 
     companion object {

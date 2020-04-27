@@ -8,8 +8,12 @@ import com.ksayker.reddit.data.rest.PostDeserializer
 import com.ksayker.reddit.domain.entity.Post
 import com.ksayker.reddit.domain.entity.PostResponse
 import io.reactivex.Single
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class PostRepositoryImpl : PostRepository {
+class PostRepositoryImpl : PostRepository, KoinComponent {
+
+    private val networkService: NetworkService by inject()
 
     private fun parseResponse(json: JsonObject): PostResponse {
         val gsonBuilder = GsonBuilder()
@@ -27,7 +31,7 @@ class PostRepositoryImpl : PostRepository {
     }
 
     override fun getTopPosts(nextPageToken: String): Single<PostResponse> {
-        return NetworkService.instance.redditApi.getTopPosts(nextPageToken)
+        return networkService.redditApi.getTopPosts(nextPageToken)
             .flatMap { json: JsonObject ->
                 Single.fromCallable { parseResponse(json) }
             }
