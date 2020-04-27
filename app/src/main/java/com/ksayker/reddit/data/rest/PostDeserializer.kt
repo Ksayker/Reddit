@@ -19,7 +19,8 @@ class PostDeserializer : JsonDeserializer<Post> {
                 j["author"].asString,
                 j["created_utc"].asLong,
                 j["thumbnail"].asString,
-                j["num_comments"].asInt
+                j["num_comments"].asInt,
+                j["title"].asString
             )
         } else {
             Post.NONE

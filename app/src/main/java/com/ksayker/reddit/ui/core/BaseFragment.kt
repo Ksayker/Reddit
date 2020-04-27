@@ -5,9 +5,12 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import com.ksayker.reddit.R
+import com.ksayker.reddit.utils.isInternetAvailable
 import com.ksayker.reddit.utils.requestStoragePermission
 
 abstract class BaseFragment : Fragment() {
@@ -28,6 +31,14 @@ abstract class BaseFragment : Fragment() {
                 activity,
                 onGranted,
                 { activity?.finish() })
+        }
+    }
+
+    protected fun checkNetworkConnection(enableAction: () -> Unit) {
+        if (isInternetAvailable()) {
+            enableAction.invoke()
+        } else {
+            Toast.makeText(context, R.string.message_checkNetwork, Toast.LENGTH_SHORT).show()
         }
     }
 

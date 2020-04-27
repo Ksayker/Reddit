@@ -2,9 +2,10 @@ package com.ksayker.reddit.ui.core
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.ksayker.reddit.R
+import com.ksayker.reddit.domain.entity.Post
 import com.ksayker.reddit.ui.screen.image.ImageFragment
+import com.ksayker.reddit.ui.screen.post.PostFragment
 import com.ksayker.reddit.ui.screen.postlist.PostListFragment
 
 class MainActivity : AppCompatActivity(), NavigationManager {
@@ -31,7 +32,6 @@ class MainActivity : AppCompatActivity(), NavigationManager {
     }
 
     override fun openImageUrl(url: String) {
-        Log.d("zxczxc", url)
         val fragment = supportFragmentManager.findFragmentByTag(ImageFragment.TAG)
 
         supportFragmentManager
@@ -44,8 +44,16 @@ class MainActivity : AppCompatActivity(), NavigationManager {
             .commit()
     }
 
-    //todo Yura: this
-    override fun openPost() {
+    override fun openPost(post: Post) {
+        val fragment = supportFragmentManager.findFragmentByTag(PostFragment.TAG)
 
+        supportFragmentManager
+            .beginTransaction()
+            .replace(
+                R.id.fl_mainActivity_fragmentHolder,
+                fragment ?: PostFragment.newInstance(post)
+            )
+            .addToBackStack(null)
+            .commit()
     }
 }

@@ -4,53 +4,57 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="12dp"
-    >
+    android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tv_postItem_author"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_post_title"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="2dp"
         android:textSize="18sp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="Author: Ivanov Ivan"
-        />
-
-    <TextView
-        android:id="@+id/tv_postItem_commentsCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/tv_postItem_author"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="Comments count: 100"
-        />
-
-    <TextView
-        android:id="@+id/tv_postItem_timestamp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/tv_postItem_commentsCount"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="1 hours ago"
+        tools:text="title"
         />
 
     <ImageView
-        android:id="@+id/iv_postItem_image"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:id="@+id/iv_post_image"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
         android:layout_margin="2dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_post_title"
+        />
+
+    <TextView
+        android:id="@+id/tv_post_commentsCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_margin="2dp"
+        app:layout_constraintTop_toBottomOf="@id/iv_post_image"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Comments count:100"
+        />
+
+    <TextView
+        android:id="@+id/tv_post_timestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/iv_post_image"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:src="@mipmap/ic_launcher_round"
+        tools:text="1 hours ago"
+        />
+
+    <TextView
+        android:id="@+id/tv_post_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/tv_post_timestamp"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Author: Ivan"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

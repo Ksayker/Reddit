@@ -1,32 +1,31 @@
 package com.ksayker.reddit.ui.screen.postlist
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ksayker.reddit.R
+import com.ksayker.reddit.domain.entity.Post
 import com.ksayker.reddit.ui.adapter.EmptyItemAdapter
 import com.ksayker.reddit.ui.adapter.LoadingAdapter
 import com.ksayker.reddit.ui.adapter.PostAdapter
 import com.ksayker.reddit.ui.core.BaseFragment
 import com.ksayker.reddit.ui.core.NavigationManager
-import com.ksayker.reddit.utils.isInternetAvailable
+import com.ksayker.reddit.utils.listener.PostClickListener
 import com.ksayker.reddit.utils.listener.UrlClickListener
-import com.ksayker.reddit.utils.requestStoragePermission
 import kotlinx.android.synthetic.main.fragment_post_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PostListFragment: BaseFragment(), UrlClickListener, LoadingAdapter.LoadingItemListener {
+class PostListFragment: BaseFragment(), UrlClickListener, LoadingAdapter.LoadingItemListener,
+    PostClickListener {
     private val viewModel: PostListViewModel by viewModel()
 
     override val layoutResId = R.layout.fragment_post_list
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val postAdapter = PostAdapter(this)
+        val postAdapter = PostAdapter(this, this)
 
         observe(viewModel.ldPostItems) {
             postAdapter.setItems(it)
@@ -68,18 +67,20 @@ class PostListFragment: BaseFragment(), UrlClickListener, LoadingAdapter.Loading
     }
 
     override fun onUrlClicked(url: String) {
-        if (isInternetAvailable()) {
+        checkNetworkConnection {
             (activity as? NavigationManager)?.openImageUrl(url)
-        } else {
-            Toast.makeText(context, R.string.message_checkNetwork, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onPostClicked(post: Post) {
+        checkNetworkConnection {
+            (activity as? NavigationManager)?.openPost(post)
         }
     }
 
     override fun onLoadingItemDisplayed() {
-        if (isInternetAvailable()) {
+        checkNetworkConnection {
             viewModel.loadNextPage()
-        } else {
-            Toast.makeText(context, R.string.message_checkNetwork, Toast.LENGTH_SHORT).show()
         }
     }
 

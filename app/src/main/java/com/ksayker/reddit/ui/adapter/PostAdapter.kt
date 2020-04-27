@@ -9,11 +9,15 @@ import com.ksayker.reddit.domain.entity.Post
 import com.ksayker.reddit.utils.extension.gone
 import com.ksayker.reddit.utils.extension.visible
 import com.ksayker.reddit.utils.getPostTimeFormat
+import com.ksayker.reddit.utils.listener.PostClickListener
 import com.ksayker.reddit.utils.listener.UrlClickListener
 import com.ksayker.reddit.utils.loadImage
 import kotlinx.android.synthetic.main.item_post.view.*
 
-class PostAdapter(private val urlClickListener: UrlClickListener) :
+class PostAdapter(
+    private val urlClickListener: UrlClickListener,
+    private val postClickListener: PostClickListener
+) :
     RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
     private val items = ArrayList<Post>()
 
@@ -55,6 +59,8 @@ class PostAdapter(private val urlClickListener: UrlClickListener) :
                 ivImage.setOnClickListener { urlClickListener.onUrlClicked(post.image) }
                 loadImage(ivImage, post.image)
             }
+
+            itemView.setOnClickListener { postClickListener.onPostClicked(post) }
         }
     }
 }
